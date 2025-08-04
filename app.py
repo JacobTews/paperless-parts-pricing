@@ -1,24 +1,18 @@
-# import logging
-# logging.basicConfig(level=logging.DEBUG)
-# print("App is starting...")
-
-# import os
-# from flask import Flask
-# app = Flask(__name__)
-
-# @app.route('/')
-# def home():
-#     return "Hello from a containerized Python app!"
-
-# if __name__ == "__main__":
-#     port = int(os.environ.get("PORT", 5000))  # Use Railway-provided port or fallback to 5000
-#     app.run(host="0.0.0.0", port=port)
-
-
-from flask import Flask
+from flask import Flask, request, jsonify
+from pricing_module import main
 
 app = Flask(__name__)
 
-@app.route("/")
-def home():
-    return "Hello from Railway!"
+@app.route("/run", methods=["POST"])
+def run_script():
+    data = request.get_json()
+    input_value = data.get("input")
+
+    if input_value is None or not isinstance(input_value, int):
+        return jsonify({"error": "Missing or invalid 'input' (must be an integer)"}), 400
+
+    try:
+        result = main(input_value)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
