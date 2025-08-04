@@ -5,4 +5,4 @@ COPY . /app
 
 RUN pip install flask gunicorn
 
-CMD ["gunicorn", "--bind", "0.0.0.0:$PORT", "app:app"]
+CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:$PORT app:app"]
