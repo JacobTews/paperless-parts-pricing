@@ -1,3 +1,7 @@
+import logging
+logging.basicConfig(level=logging.DEBUG)
+print("App is starting...")
+
 import os
 from flask import Flask
 app = Flask(__name__)
